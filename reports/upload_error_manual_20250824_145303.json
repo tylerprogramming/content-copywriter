@@ -1,0 +1,7 @@
+{
+  "timestamp": "2025-08-24T14:53:03.586514",
+  "job_name": "manual",
+  "duration_seconds": 0.0,
+  "status": "error",
+  "error": "credentials.json not found at credentials/credentials.json. Please download it from Google Cloud Console."
+}

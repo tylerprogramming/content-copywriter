@@ -1,0 +1,21 @@
+{
+  "timestamp": "2025-08-24T09:09:43.139744",
+  "job_name": "manual",
+  "duration_seconds": 16.9,
+  "status": "success",
+  "summary": {
+    "processed": 1,
+    "uploaded": 1,
+    "failed": 0
+  },
+  "details": [
+    {
+      "success": true,
+      "file_name": "simple gmail labeler ai automation.mp4",
+      "file_id": "1WsR-eiw2dEREXshKYyC-0-Svd9tTfcmh",
+      "blotato_media_url": "https://database.blotato.io/storage/v1/object/public/public_media/d2b8d644-0e81-4573-a71a-e52410f6fe62/78d71a79-8b6e-4731-bdf9-fee46471f4ca.mp4",
+      "airtable_record_id": "rec9pD5c8RFw7GgWW",
+      "file_size_mb": 16.4
+    }
+  ]
+}

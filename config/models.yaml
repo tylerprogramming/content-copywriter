@@ -1,0 +1,100 @@
+# AI Model Configuration per Platform
+#
+# This file controls which OpenAI model to use for each platform
+# and content type (text vs video).
+#
+# Available models:
+#   - gpt-4o-mini: Fast, cost-effective, great for most content
+#   - gpt-4o: More powerful, better for complex/longer content
+#   - gpt-4-turbo: Legacy option
+#
+# You can adjust temperature (creativity) and max_tokens (length) per platform
+
+# Default settings used when platform doesn't have specific config
+defaults:
+  model: "gpt-4o-mini"
+  temperature: 0.1
+  max_tokens: 5000
+
+# Platform-specific configurations
+# Use 'text' and 'video' keys for platforms with different prompts
+platforms:
+
+  # LinkedIn: Professional content
+  linkedin:
+    text:
+      model: "gpt-5"
+      temperature: 1.0
+      description: "LinkedIn text-only posts"
+    video:
+      model: "gpt-5"  # Use better model for video-based content
+      temperature: 1.0
+      description: "LinkedIn posts with video transcripts"
+
+  # Instagram: Visual storytelling
+  instagram:
+    model: "gpt-4.1"
+    temperature: 0.8  # Slightly more creative
+    max_tokens: 2200  # Instagram allows longer captions
+    description: "Instagram posts and reels"
+
+  # TikTok: Viral, energetic content
+  tiktok:
+    model: "gpt-4o-mini"
+    temperature: 0.9  # More creative for viral content
+    max_tokens: 2200
+    description: "TikTok video captions"
+
+  # YouTube Shorts: Concise, punchy
+  youtube:
+    model: "gpt-4o-mini"
+    temperature: 0.8
+    max_tokens: 1000
+    description: "YouTube Shorts captions"
+
+  youtube_shorts:
+    model: "gpt-4o-mini"
+    temperature: 0.8
+    max_tokens: 1000
+    description: "YouTube Shorts captions (alias)"
+
+  # Facebook: Community-focused
+  facebook:
+    model: "gpt-4o-mini"
+    temperature: 0.7
+    max_tokens: 1500
+    description: "Facebook posts"
+
+  # Twitter/X: Concise, witty
+  twitter:
+    model: "gpt-4o-mini"
+    temperature: 0.8
+    max_tokens: 280  # Twitter character limit
+    description: "Twitter/X posts"
+
+  # Threads: Conversational
+  threads:
+    model: "gpt-4o-mini"
+    temperature: 0.8
+    max_tokens: 500
+    description: "Threads posts"
+
+  # Bluesky: Twitter-like
+  bluesky:
+    model: "gpt-4o-mini"
+    temperature: 0.8
+    max_tokens: 300
+    description: "Bluesky posts"
+
+  # Pinterest: Inspirational
+  pinterest:
+    model: "gpt-4o-mini"
+    temperature: 0.8
+    max_tokens: 500
+    description: "Pinterest pin descriptions"
+
+  # Skool: Community engagement posts
+  skool:
+    model: "gpt-5"
+    temperature: 1.0
+    description: "Skool community posts with day-specific templates"

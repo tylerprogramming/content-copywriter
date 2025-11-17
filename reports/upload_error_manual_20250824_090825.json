@@ -1,0 +1,7 @@
+{
+  "timestamp": "2025-08-24T09:08:25.411982",
+  "job_name": "manual",
+  "duration_seconds": 0.9,
+  "status": "error",
+  "error": "'GoogleDriveFolderMonitor' object has no attribute 'airtable'"
+}

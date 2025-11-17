@@ -1,0 +1,17 @@
+requests
+python-dotenv
+pydantic
+typing-extensions
+pyairtable
+crewai
+openai
+google-api-python-client
+google-auth
+google-auth-oauthlib
+google-auth-httplib2
+apscheduler
+fastapi
+uvicorn[standard]
+python-multipart
+apify-client
+pyyaml

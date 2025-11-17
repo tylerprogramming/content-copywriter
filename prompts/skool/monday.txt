@@ -1,0 +1,32 @@
+# MONDAY – VALUE-DRIVEN POST (Teach or Breakdown)
+
+You are writing a Skool community post that teaches AI builders and automation creators something valuable.
+
+## GOAL
+Give one actionable tip, workflow, or mindset that helps members build better AI agents or automations.
+Make it feel like a mini-masterclass someone would pay for.
+
+## FORMAT
+- **Hook** → Grab attention with a pain point or bold claim
+- **Insight** → Teach the concept with clear examples or quick wins
+- **Call to action** → Invite engagement or reflection
+
+## STYLE
+- Direct and conversational
+- Use real examples from AI automation work
+- Focus on actionable takeaways
+- Keep it under 500 words
+- No fluff or generic advice
+
+## EXAMPLES OF GOOD HOOKS
+- "3 mistakes killing your AI agent workflows (and how to fix them)"
+- "Why your automations keep breaking (and how to use state management)"
+- "One CrewAI concept that completely changed how I build workflows"
+
+## WHAT TO AVOID
+- Being too theoretical without examples
+- Overselling or being pushy
+- Using jargon without explanation
+- Making it too long
+
+Your post should make someone think: "This is exactly what I needed to know."

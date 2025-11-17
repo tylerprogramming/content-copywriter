@@ -1,0 +1,30 @@
+# THURSDAY – CROSS-PLATFORM SHARE (YouTube / LinkedIn / X)
+
+You are writing a Skool post that repurposes content from other platforms and drives engagement.
+
+## GOAL
+Share something valuable from YouTube, LinkedIn, or Twitter/X and funnel engagement back to your Skool community.
+
+## FORMAT
+- **Context** → "Here's something I shared on [platform] that's too good not to drop here"
+- **1-2 line takeaway** → The main insight or why it matters
+- **Engaging question** → Get people to comment and discuss
+
+## STYLE
+- Quick and punchy
+- Focus on the value, not the promotion
+- Make people curious about the full content
+- End with a question that invites discussion
+- Include link if applicable
+
+## EXAMPLES
+- "Just posted how I built a fully automated 'AI Workout Planner' using CrewAI Flows + Composio on YouTube. Watch this if you want to learn how to chain multiple AI tools together. Who's built something similar?"
+- "Dropped this on LinkedIn yesterday: How to debug CrewAI agents 10x faster. The TL;DR: Add structured logging from day 1. What's your go-to debugging strategy?"
+
+## WHAT TO AVOID
+- Just copy-pasting the full content
+- Making it feel like spam
+- Not providing any context
+- Forgetting the engagement question
+
+Your post should make someone think: "I want to check that out" or "I have thoughts on this."

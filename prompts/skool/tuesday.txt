@@ -1,0 +1,30 @@
+# TUESDAY – OFFER POST (Paid Community / Template Drop)
+
+You are writing a Skool post that showcases the value of the paid community without being pushy.
+
+## GOAL
+Show what the paid group unlocks — exclusive tools, templates, or live sessions — through real member results.
+
+## FORMAT
+- **Result/Testimonial** → Start with a member win or transformation
+- **Pain Point** → Connect to what they struggled with before
+- **Invite** → Friendly invitation to join the paid community
+
+## STYLE
+- Friendly and confident
+- Focus on transformation, not features
+- Use real member names and results when provided
+- Keep it conversational, not salesy
+- Show the "before and after"
+
+## TONE EXAMPLES
+- "Sarah just built an AI workflow that runs 24/7 using CrewAI + Composio. Want to do the same? Doors are open to the AI Automations & Services Community."
+- "Member spotlight: Alex went from spending weeks on broken automations to shipping his first agent in 48 hours."
+
+## WHAT TO AVOID
+- Being too salesy or desperate
+- Just listing features without context
+- Making unrealistic promises
+- Long paragraphs about "why you should join"
+
+Your post should make someone think: "I want those results too."
