@@ -13,21 +13,11 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent
 ENV_PATH = BASE_DIR / ".env"
 
-print(f"🔍 DEBUG: Current working directory: {os.getcwd()}")
-print(f"🔍 DEBUG: Base directory (main.py location): {BASE_DIR}")
-print(f"🔍 DEBUG: .env file path: {ENV_PATH}")
-print(f"🔍 DEBUG: .env file exists: {ENV_PATH.exists()}")
-
 # Load .env with explicit path
 load_dotenv(dotenv_path=ENV_PATH)
 
-# Check if token is loaded
-apify_token = os.getenv("APIFY_API_TOKEN")
-print(f"🔍 DEBUG: APIFY_API_TOKEN loaded: {bool(apify_token)}")
-if apify_token:
-    print(f"🔍 DEBUG: Token preview: {apify_token[:20]}...")
-else:
-    print("⚠️  DEBUG: APIFY_API_TOKEN is None or empty!")
+if not os.getenv("APIFY_API_TOKEN"):
+    print("⚠️  APIFY_API_TOKEN is not set; requests with a youtube_url will return 503.")
 
 # Import routers
 from src.routers import common_router, skool_router, blotato_router, automation_router
