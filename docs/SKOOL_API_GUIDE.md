@@ -189,7 +189,7 @@ POST /skool/post/generate
   "content": "Generated post content...",
   "character_count": 450,
   "word_count": 87,
-  "model_used": "gpt-5",
+  "model_used": "gpt-5.6-sol",
   "message": "Value-Driven Post generated successfully",
   "generated_at": "2025-01-06T12:00:00"
 }
