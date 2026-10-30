@@ -9,6 +9,10 @@
 #   - gpt-4-turbo: Legacy option
 #
 # You can adjust temperature (creativity) and max_tokens (length) per platform
+#
+# gpt-5 shuts down on 2026-12-11; OpenAI names gpt-5.6-sol as its replacement
+# (https://developers.openai.com/api/docs/deprecations). Keep temperature at
+# 1.0 (the default) for GPT-5.x entries; reasoning models reject other values.
 
 # Default settings used when platform doesn't have specific config
 defaults:
@@ -23,11 +27,11 @@ platforms:
   # LinkedIn: Professional content
   linkedin:
     text:
-      model: "gpt-5"
+      model: "gpt-5.6-sol"
       temperature: 1.0
       description: "LinkedIn text-only posts"
     video:
-      model: "gpt-5"  # Use better model for video-based content
+      model: "gpt-5.6-sol"  # Use better model for video-based content
       temperature: 1.0
       description: "LinkedIn posts with video transcripts"
 
@@ -95,6 +99,6 @@ platforms:
 
   # Skool: Community engagement posts
   skool:
-    model: "gpt-5"
+    model: "gpt-5.6-sol"
     temperature: 1.0
     description: "Skool community posts with day-specific templates"
