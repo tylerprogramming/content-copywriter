@@ -47,7 +47,7 @@ class ContentGenerationService:
             tools=[],
             verbose=False,
             allow_delegation=False,
-            llm=LLM(model="gpt-5")
+            llm=LLM(model="gpt-5.6-sol")
         )
         
         logger.info("✅ CrewAI Content Generation Agent initialized")
