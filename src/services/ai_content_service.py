@@ -82,7 +82,7 @@ class AIContentService:
 
             # Get model configuration from YAML
             model_config = config.get_model_config(platform, has_video=has_video)
-            model_name = model_config.get("model", "gpt-4o-mini")
+            model_name = model_config.get("model", "gpt-6-luna")
             temperature = model_config.get("temperature", 0.7)
 
             if video_transcript:
@@ -104,9 +104,15 @@ class AIContentService:
                 "temperature": temperature
             }
 
-            # Only include max_tokens if specified in config (some models like gpt-5 don't use it)
+            # Only include max_tokens if specified in config (some models like gpt-5 don't use it).
+            # GPT-5 and later reject max_tokens on chat completions, so send it
+            # as max_completion_tokens, which every current model accepts.
             if "max_tokens" in model_config:
-                api_params["max_tokens"] = model_config["max_tokens"]
+                api_params["max_completion_tokens"] = model_config["max_tokens"]
+
+            # reasoning_effort "none" lets GPT-6 Luna accept a custom temperature
+            if "reasoning_effort" in model_config:
+                api_params["reasoning_effort"] = model_config["reasoning_effort"]
 
             # Call OpenAI with model config from YAML
             response = self.client.chat.completions.create(**api_params)

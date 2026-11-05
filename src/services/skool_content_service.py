@@ -207,7 +207,7 @@ class SkoolContentService:
 
             # Get model configuration from YAML (use 'skool' platform if exists, else defaults)
             model_config = config.get_model_config("skool", has_video=False)
-            model_name = model_config.get("model", "gpt-4o-mini")
+            model_name = model_config.get("model", "gpt-6-luna")
             temperature = model_config.get("temperature", 0.7)
 
             # Build API call parameters
@@ -220,9 +220,14 @@ class SkoolContentService:
                 "temperature": temperature
             }
 
-            # Only include max_tokens if specified
+            # Only include max_tokens if specified. GPT-5 and later reject
+            # max_tokens on chat completions, so send it as max_completion_tokens.
             if "max_tokens" in model_config:
-                api_params["max_tokens"] = model_config["max_tokens"]
+                api_params["max_completion_tokens"] = model_config["max_tokens"]
+
+            # reasoning_effort "none" lets GPT-6 Luna accept a custom temperature
+            if "reasoning_effort" in model_config:
+                api_params["reasoning_effort"] = model_config["reasoning_effort"]
 
             # Call OpenAI
             response = self.client.chat.completions.create(**api_params)
