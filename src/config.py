@@ -153,8 +153,8 @@ class BlotatoConfig:
             dict: Model configuration with 'model', 'temperature', 'max_tokens' keys
 
         Example:
-            >>> config.get_model_config('linkedin', has_video=True)
-            {'model': 'gpt-4o', 'temperature': 0.7, 'max_tokens': 2000}
+            >>> config.get_model_config('instagram')
+            {'model': 'gpt-6-luna', 'reasoning_effort': 'none', 'temperature': 0.8, 'max_tokens': 2200}
         """
         model_config = BlotatoConfig.load_model_config()
         platform = platform.lower()
