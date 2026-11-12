@@ -136,7 +136,7 @@ python automations/monitoring/folder_monitor.py
 Transcribe videos using OpenAI Whisper for better content.
 
 ```bash
-python automations/transcription_automation.py
+python automations/transcription/transcription_automation.py
 ```
 
 ### Automation #3: Smart Publishing
