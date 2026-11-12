@@ -199,12 +199,7 @@ POST /skool/post/generate
 
 ## Testing
 
-Run the test script to see examples:
-```bash
-python test_skool_generation.py
-```
-
-Or start the server and visit the docs:
+Start the server and visit the docs:
 ```bash
 uvicorn main:app --reload
 # Visit: http://localhost:8000/docs

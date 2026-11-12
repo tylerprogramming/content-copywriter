@@ -444,9 +444,9 @@ Your App
   ↓
 Your FastAPI Server (localhost:8000)
   ↓
-api/main.py → Routes
+main.py → FastAPI app
   ↓
-api/services/ → Business Logic
+src/routers/ → Routes
   ↓
 src/services/publishing_service.py
   ↓
@@ -517,11 +517,11 @@ Social Media Platforms
 
 **"Module not found" errors**
 - Run `pip install -r requirements.txt`
-- Ensure you're in `09_blotato` directory
+- Run commands from the project root (the folder with `main.py`)
 
 **"Platform not configured"**
 - Add `PLATFORM_ACCOUNT_ID` to `.env`
-- Restart server: `uvicorn api.main:app --reload`
+- Restart server: `uvicorn main:app --reload`
 
 **Media upload fails**
 - Check file size (max 200MB)
@@ -543,17 +543,18 @@ gunicorn main:app -w 4 -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000
 
 ## Testing
 
-Run the test suite:
+There is no automated test suite. With the server running (`uvicorn main:app --reload`),
+the scripts in `examples/` call it on `http://localhost:8000`:
 ```bash
-python api/test_api.py
+python examples/carousel_example.py
 ```
 
-Or test manually with cURL commands above.
+Or test manually with the cURL commands above.
 
 ## Integration with Automations
 
 This API complements the automation system:
 - **Automations** (`automations/`) - Scheduled, hands-off operation
-- **API** (`api/`) - On-demand, programmatic access
+- **API** (`main.py` + `src/routers/`) - On-demand, programmatic access
 
 Both use the same core services and configuration.
