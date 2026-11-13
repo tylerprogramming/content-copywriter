@@ -5,7 +5,7 @@ Clean, flat structure with no unnecessary nesting.
 ## Directory Structure
 
 ```
-09_blotato/
+content-copywriter/
 ├── main.py                       # FastAPI server (routes + validation)
 │
 ├── src/                          # Core Business Logic
