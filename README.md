@@ -46,10 +46,10 @@ Scheduled automation that runs continuously:
 
 ```bash
 # Run complete pipeline
-python automations/daily_automation.py
+python -m automations.daily_automation
 
 # Run continuously (8 AM daily, hourly transcription)
-python automations/daily_automation.py --continuous
+python -m automations.daily_automation --continuous
 ```
 
 ## 📦 Quick Setup
@@ -99,12 +99,17 @@ uvicorn main:app --reload
 ```
 
 **For Automations:**
+
+Run these from the repo root. The scripts import `src.*`, so they run as modules
+(`python -m automations...`); `python automations/<file>.py` puts only the script's
+own folder on the import path and stops with `ModuleNotFoundError: No module named 'src'`.
+
 ```bash
 # Setup Google Drive (first time only)
-python automations/setup/setup_blotato_automation.py
+python -m automations.setup.setup_blotato_automation
 
 # Run pipeline
-python automations/daily_automation.py
+python -m automations.daily_automation
 ```
 
 ## 📋 System Architecture
@@ -129,14 +134,14 @@ python automations/daily_automation.py
 Upload videos from Google Drive automatically.
 
 ```bash
-python automations/monitoring/folder_monitor.py
+python -m automations.monitoring.folder_monitor
 ```
 
 ### Automation #2: Video Transcription
 Transcribe videos using OpenAI Whisper for better content.
 
 ```bash
-python automations/transcription_automation.py
+python -m automations.transcription.transcription_automation
 ```
 
 ### Automation #3: Smart Publishing
@@ -144,10 +149,10 @@ Publish to missing platforms only (smart platform detection).
 
 ```bash
 # Publish immediately
-python automations/publishing/schedule_automation.py
+python -m automations.publishing.schedule_automation
 
 # Schedule for next day at 3 PM
-python automations/publishing/schedule_automation.py --schedule
+python -m automations.publishing.schedule_automation --schedule
 ```
 
 ### Automation #4: Daily Orchestrator
@@ -155,10 +160,10 @@ Complete hands-off automation.
 
 ```bash
 # Run all 3 automations once
-python automations/daily_automation.py
+python -m automations.daily_automation
 
 # Run continuously with daily schedule
-python automations/daily_automation.py --continuous --schedule
+python -m automations.daily_automation --continuous --schedule
 ```
 
 ## 🎯 Platform Support
