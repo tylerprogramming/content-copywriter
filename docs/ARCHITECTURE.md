@@ -5,14 +5,25 @@ Clean, flat structure with no unnecessary nesting.
 ## Directory Structure
 
 ```
-09_blotato/
-├── main.py                       # FastAPI server (routes + validation)
+content-copywriter/
+├── main.py                       # FastAPI app: loads .env, includes the routers
+│
+├── config/
+│   └── models.yaml               # OpenAI model settings per platform (read by src/config.py)
 │
 ├── src/                          # Core Business Logic
+│   ├── routers/                  # HTTP routes (FastAPI APIRouter per area)
+│   │   ├── common_router.py      # GET /, GET /platforms
+│   │   ├── blotato_router.py     # /content, /carousel, /media, /posts + validation helpers
+│   │   ├── skool_router.py       # POST /skool/post/generate
+│   │   └── automation_router.py  # POST /automation/transcribe-video
+│   │
 │   ├── models/                   # API request/response models
-│   │   ├── requests.py           # TextPostRequest, MediaPostRequest, etc.
-│   │   ├── responses.py          # PostResponse, MediaUploadResponse, etc.
-│   │   └── content.py            # ContentGenerationRequest
+│   │   ├── requests.py           # TextPostRequest, MediaPostRequest, BulkPostRequest
+│   │   ├── responses.py          # PostResponse, MediaUploadResponse, BulkPostResponse
+│   │   ├── content.py            # ContentGenerationRequest/Response
+│   │   ├── carousel.py           # Carousel request/response models
+│   │   └── skool.py              # SkoolPostRequest/Response
 │   │
 │   ├── blotato/                  # Blotato API client
 │   │   ├── client.py             # HTTP client for Blotato API
@@ -25,17 +36,16 @@ Clean, flat structure with no unnecessary nesting.
 │   │   ├── airtable_service.py           # Database operations
 │   │   ├── media_service.py              # Google Drive handling
 │   │   ├── video_transcription_service.py # Video transcription
-│   │   └── content_generation_service.py  # CrewAI content (automations)
+│   │   ├── content_generation_service.py  # CrewAI content (automations)
+│   │   ├── content_service.py            # Upload from Drive + publish in one call
+│   │   └── skool_content_service.py      # Skool post generation
 │   │
-│   ├── prompts/                  # Platform-specific AI prompts
-│   │   ├── youtube_shorts.py     # YouTube Shorts prompts
-│   │   ├── linkedin.py           # LinkedIn prompts
-│   │   ├── instagram.py          # Instagram prompts
-│   │   └── tiktok.py             # TikTok prompts
+│   ├── prompts/                  # Prompt loader (__init__.py): reads prompts/*.txt at import
 │   │
 │   ├── utils/                    # Utilities
 │   │   ├── logger.py             # Logging setup
-│   │   └── google_drive.py       # Google Drive utilities
+│   │   ├── google_drive.py       # Google Drive utilities
+│   │   └── url_converter.py      # Google Drive share URL -> direct download URL
 │   │
 │   └── config.py                 # Central configuration
 │
@@ -45,6 +55,12 @@ Clean, flat structure with no unnecessary nesting.
 │   ├── publishing/               # Publishing automation
 │   ├── transcription/            # Video transcription
 │   └── setup/                    # Setup scripts
+│
+├── prompts/                      # Prompt text files (edit these to change the copy)
+│   ├── youtube_shorts.txt, linkedin_text.txt, linkedin_video.txt,
+│   │   instagram.txt, tiktok.txt # API content generation (src/prompts -> ai_content_service)
+│   ├── <platform>_prompts.txt    # CrewAI automations (content_generation_service)
+│   └── skool/<day>.txt           # Skool posts by weekday (skool_content_service)
 │
 └── docs/                         # Documentation
     ├── API_GUIDE.md              # Complete API documentation
@@ -64,23 +80,24 @@ Clean, flat structure with no unnecessary nesting.
 - No duplication between API and automations
 
 ### 3. Clear Separation
-- `main.py` - HTTP routes + validation helpers only
+- `main.py` - creates the FastAPI app and includes the routers
+- `src/routers/` - HTTP routes + validation helpers
 - `src/services/` - All business logic
 - `src/models/` - All data models
 - `automations/` - Orchestration scripts
 
 ## Layer Responsibilities
 
-### API Server (`main.py`)
+### API Server (`main.py` + `src/routers/`)
 - **Purpose**: HTTP interface for external access
-- **Contains**: Routes, validation helpers
-- **Does NOT contain**: Business logic or models
+- **Contains**: `main.py` loads `.env` and includes the four routers; each router in `src/routers/` holds its routes and validation helpers
+- **Does NOT contain**: Business logic
 - **Uses**: `src/services/` and `src/models/`
 
 ### Core (`src/`)
 - **Purpose**: Reusable business logic and models
 - **Contains**: All services, models, utilities, configs
-- **Used by**: `main.py`, automation scripts, any consumers
+- **Used by**: the routers, automation scripts, any consumers
 
 ### Automations (`automations/`)
 - **Purpose**: Scheduled, hands-off workflows
@@ -93,9 +110,9 @@ Clean, flat structure with no unnecessary nesting.
 ```
 HTTP Request
     ↓
-main.py (route)
+main.py (FastAPI app)
     ↓
-Validation helpers (in main.py)
+src/routers/ (route + validation helpers)
     ↓
 src/services/ (business logic)
     ↓
@@ -122,6 +139,8 @@ All API-facing data models:
 - **requests.py** - Request models (TextPostRequest, etc.)
 - **responses.py** - Response models (PostResponse, etc.)
 - **content.py** - Content generation models
+- **carousel.py** - Carousel generation and publishing models
+- **skool.py** - Skool post generation models
 
 ### Services (`src/services/`)
 All business logic:
@@ -131,12 +150,16 @@ All business logic:
 - **airtable_service.py** - Database operations
 - **media_service.py** - Google Drive integration
 - **video_transcription_service.py** - Video transcription
+- **content_service.py** - Upload media from Google Drive and publish it in one call
+- **skool_content_service.py** - Skool post generation (used by `/skool/post/generate`)
 
-### Prompts (`src/prompts/`)
-Platform-specific AI prompts (Python modules):
-- Shared by both AI services
-- One file per platform
-- Easy to update and version control
+### Prompts (`prompts/` + `src/prompts/`)
+Platform-specific AI prompts are plain text files in the top-level `prompts/` folder:
+- `src/prompts/__init__.py` loads `youtube_shorts.txt`, `linkedin_text.txt`, `linkedin_video.txt`, `instagram.txt` and `tiktok.txt` when it is imported; `ai_content_service.py` reads them through `get_prompt(platform, has_video)`
+- `content_generation_service.py` (CrewAI automations) reads `prompts/<platform>_prompts.txt`
+- `skool_content_service.py` reads `prompts/skool/<day>.txt`
+- Edit a `.txt` file to change the copy; no code change needed (restart the API server, since prompts load at import)
+- See `prompts/README.md` for what each file covers
 
 ### Configuration (`src/config.py`)
 Central configuration:
@@ -147,31 +170,35 @@ Central configuration:
 
 ## Import Pattern
 
-### From main.py
+`src/` is a package. Code imports it by its full name (`from src.services...`);
+no file adds `src/` to `sys.path`:
+
+### From main.py and src/
 ```python
-# Add src to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
-
-# Import services
-from services.publishing_service import PublishingService
-from services.ai_content_service import AIContentService
-
-# Import models
-from models.requests import TextPostRequest
-from models.responses import PostResponse
-
-# Import config
-from config import config
+from src.routers import common_router, skool_router, blotato_router, automation_router
+from src.services.publishing_service import PublishingService
+from src.models.requests import TextPostRequest
+from src.config import config
 ```
 
 ### From automations
 ```python
-# Add src to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
-
-# Same imports as main.py
-from services.publishing_service import PublishingService
+from src.services.airtable_service import AirtableService
+from src.services.video_transcription_service import VideoTranscriptionService
 ```
+
+`from src...` only resolves when the repo root is on `sys.path`, so run
+everything from the repo root:
+
+```bash
+uvicorn main:app --reload                                     # API
+python -m automations.transcription.transcription_automation  # an automation
+```
+
+`python automations/transcription/transcription_automation.py` puts only that
+script's folder on `sys.path` and fails with `ModuleNotFoundError: No module
+named 'src'`. The CrewAI service also opens `prompts/<platform>_prompts.txt`
+relative to the current directory, which is another reason to start from the root.
 
 ## Why This Structure?
 
@@ -192,8 +219,9 @@ src/
 
 ### ✅ After (flat)
 ```
-main.py              # API routes
+main.py              # FastAPI app, includes the routers
 src/
+├── routers/...      # API routes
 ├── models/...       # All models
 └── services/...     # All logic
 ```
@@ -215,7 +243,7 @@ uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4
 
 1. **New model?** → Add to `src/models/`
 2. **New service?** → Add to `src/services/`
-3. **New endpoint?** → Add route to `main.py`
-4. **New platform?** → Add prompt to `src/prompts/`
+3. **New endpoint?** → Add a route to the matching router in `src/routers/` (a new router is exported from `src/routers/__init__.py` and needs `app.include_router(...)` in `main.py`)
+4. **New platform?** → Add a prompt file to `prompts/` and map it in `prompt_files` and `get_supported_platforms()` in `src/prompts/__init__.py`
 
 Everything lives in `src/` and can be used by both API and automations!
