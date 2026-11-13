@@ -170,31 +170,35 @@ Central configuration:
 
 ## Import Pattern
 
-### From main.py
+`src/` is a package. Code imports it by its full name (`from src.services...`);
+no file adds `src/` to `sys.path`:
+
+### From main.py and src/
 ```python
-# Add src to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
-
-# Import services
-from services.publishing_service import PublishingService
-from services.ai_content_service import AIContentService
-
-# Import models
-from models.requests import TextPostRequest
-from models.responses import PostResponse
-
-# Import config
-from config import config
+from src.routers import common_router, skool_router, blotato_router, automation_router
+from src.services.publishing_service import PublishingService
+from src.models.requests import TextPostRequest
+from src.config import config
 ```
 
 ### From automations
 ```python
-# Add src to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
-
-# Same imports as main.py
-from services.publishing_service import PublishingService
+from src.services.airtable_service import AirtableService
+from src.services.video_transcription_service import VideoTranscriptionService
 ```
+
+`from src...` only resolves when the repo root is on `sys.path`, so run
+everything from the repo root:
+
+```bash
+uvicorn main:app --reload                                     # API
+python -m automations.transcription.transcription_automation  # an automation
+```
+
+`python automations/transcription/transcription_automation.py` puts only that
+script's folder on `sys.path` and fails with `ModuleNotFoundError: No module
+named 'src'`. The CrewAI service also opens `prompts/<platform>_prompts.txt`
+relative to the current directory, which is another reason to start from the root.
 
 ## Why This Structure?
 
