@@ -40,11 +40,7 @@ content-copywriter/
 │   │   ├── content_service.py            # Upload from Drive + publish in one call
 │   │   └── skool_content_service.py      # Skool post generation
 │   │
-│   ├── prompts/                  # Platform-specific AI prompts
-│   │   ├── youtube_shorts.py     # YouTube Shorts prompts
-│   │   ├── linkedin.py           # LinkedIn prompts
-│   │   ├── instagram.py          # Instagram prompts
-│   │   └── tiktok.py             # TikTok prompts
+│   ├── prompts/                  # Prompt loader (__init__.py): reads prompts/*.txt at import
 │   │
 │   ├── utils/                    # Utilities
 │   │   ├── logger.py             # Logging setup
@@ -59,6 +55,12 @@ content-copywriter/
 │   ├── publishing/               # Publishing automation
 │   ├── transcription/            # Video transcription
 │   └── setup/                    # Setup scripts
+│
+├── prompts/                      # Prompt text files (edit these to change the copy)
+│   ├── youtube_shorts.txt, linkedin_text.txt, linkedin_video.txt,
+│   │   instagram.txt, tiktok.txt # API content generation (src/prompts -> ai_content_service)
+│   ├── <platform>_prompts.txt    # CrewAI automations (content_generation_service)
+│   └── skool/<day>.txt           # Skool posts by weekday (skool_content_service)
 │
 └── docs/                         # Documentation
     ├── API_GUIDE.md              # Complete API documentation
@@ -151,11 +153,13 @@ All business logic:
 - **content_service.py** - Upload media from Google Drive and publish it in one call
 - **skool_content_service.py** - Skool post generation (used by `/skool/post/generate`)
 
-### Prompts (`src/prompts/`)
-Platform-specific AI prompts (Python modules):
-- Shared by both AI services
-- One file per platform
-- Easy to update and version control
+### Prompts (`prompts/` + `src/prompts/`)
+Platform-specific AI prompts are plain text files in the top-level `prompts/` folder:
+- `src/prompts/__init__.py` loads `youtube_shorts.txt`, `linkedin_text.txt`, `linkedin_video.txt`, `instagram.txt` and `tiktok.txt` when it is imported; `ai_content_service.py` reads them through `get_prompt(platform, has_video)`
+- `content_generation_service.py` (CrewAI automations) reads `prompts/<platform>_prompts.txt`
+- `skool_content_service.py` reads `prompts/skool/<day>.txt`
+- Edit a `.txt` file to change the copy; no code change needed (restart the API server, since prompts load at import)
+- See `prompts/README.md` for what each file covers
 
 ### Configuration (`src/config.py`)
 Central configuration:
@@ -236,6 +240,6 @@ uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4
 1. **New model?** → Add to `src/models/`
 2. **New service?** → Add to `src/services/`
 3. **New endpoint?** → Add a route to the matching router in `src/routers/` (a new router is exported from `src/routers/__init__.py` and needs `app.include_router(...)` in `main.py`)
-4. **New platform?** → Add prompt to `src/prompts/`
+4. **New platform?** → Add a prompt file to `prompts/` and map it in `prompt_files` and `get_supported_platforms()` in `src/prompts/__init__.py`
 
 Everything lives in `src/` and can be used by both API and automations!
